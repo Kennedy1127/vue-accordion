@@ -1,57 +1,109 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <ul>
+    <li
+      v-for="(artist, i) in artists"
+      :style="`background-image: url(${artist.backgroundUrl});`"
+      role="button"
+      :class="active === i ? 'active' : ''"
+      @click="() => (active = i)"
+    >
+      <div class="content"></div>
+    </li>
+  </ul>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      active: 0,
+      artists: [
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/dom-dolla.jpg',
+        },
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/crooked-colours.jpg',
+        },
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/mallrat.jpg',
+        },
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/allday.jpg',
+        },
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/boo-seeka.jpg',
+        },
+        {
+          backgroundUrl: 'https://assets.codepen.io/152347/running-touch.jpg',
+        },
+      ],
+    };
+  },
+
+  methods: {
+    nextSlide() {
+      if (this.active <= this.artists.length) {
+        this.active = this.active += 1;
+      }
+    },
+    prevSlide() {
+      if (this.active > 0) {
+        this.active = this.active + -1;
+      }
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
 ul {
-  list-style-type: none;
+  display: flex;
+  min-height: 750px;
+  height: 100vh;
+  margin: 0;
   padding: 0;
+  overflow: hidden;
+  list-style-type: none;
+  width: 100%;
+  min-width: 100%;
+  flex-direction: column;
+
+  @media only screen and (min-width: 1280px) {
+    flex-direction: row;
+  }
 }
+
 li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.75);
+  }
+
+  &.active {
+    flex: 6;
+    cursor: default;
+
+    &:before {
+      background: linear-gradient(180deg, rgba(15, 15, 15, 0) 0%, #111111 100%);
+    }
+  }
 }
 </style>
